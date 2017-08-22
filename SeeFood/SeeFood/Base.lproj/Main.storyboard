@@ -67,6 +67,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="M3Q-yT-Hdz">
+                        <barButtonItem key="leftBarButtonItem" title="Photo Library" id="Dnh-WZ-CVd">
+                            <connections>
+                                <action selector="libraryTapped:" destination="BYZ-38-t0r" id="Qid-Fn-Mnn"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="camera" id="9fc-OI-QmN">
                             <connections>
                                 <action selector="cameraTapped:" destination="BYZ-38-t0r" id="1Cc-fx-TG2"/>
@@ -76,6 +81,7 @@
                     <connections>
                         <outlet property="cameraButton" destination="9fc-OI-QmN" id="ULT-fa-QP6"/>
                         <outlet property="imageView" destination="31t-bP-aXD" id="bSV-gx-iyc"/>
+                        <outlet property="photoButton" destination="Dnh-WZ-CVd" id="9u0-uH-Iyr"/>
                         <outlet property="shareButton" destination="PGU-Ig-2nZ" id="7sL-Al-ZNO"/>
                         <outlet property="topBarImageView" destination="jUs-zG-UPD" id="esO-BW-qtR"/>
                     </connections>

@@ -19,6 +19,7 @@ class ViewController: UIViewController,UIImagePickerControllerDelegate, UINaviga
     @IBOutlet weak var topBarImageView: UIImageView!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var cameraButton: UIBarButtonItem!
+    @IBOutlet weak var photoButton: UIBarButtonItem!
     
     let imagePicker = UIImagePickerController()
     var classificationResults : [String] = []
@@ -34,6 +35,7 @@ class ViewController: UIViewController,UIImagePickerControllerDelegate, UINaviga
     }
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        classificationResults = []
         cameraButton.isEnabled = false
         SVProgressHUD.show()
       
@@ -70,25 +72,21 @@ class ViewController: UIViewController,UIImagePickerControllerDelegate, UINaviga
                     self.shareButton.isHidden = false
                     
                 }
-                
+                print(self.classificationResults)
                 if self.classificationResults.contains("hotdog") {
                     DispatchQueue.main.async{
                         self.navigationItem.title = "HOTDOG"
                         self.navigationController?.navigationBar.barTintColor = UIColor.green
                         self.navigationController?.navigationBar.isTranslucent = false
-                        self.topBarImageView.image = UIImage(named: "hotdog")
                     }
                 }else{
                     DispatchQueue.main.async {
                         self.navigationItem.title = "NOT HOTDOG"
                         self.navigationController?.navigationBar.barTintColor = UIColor.red
                         self.navigationController?.navigationBar.isTranslucent = false
-                        self.topBarImageView.image = UIImage(named: "not-hotdog")
 
                     }
                 }
- 
-         //       print(classifiedImages)
             })
             
         } else{
@@ -98,13 +96,32 @@ class ViewController: UIViewController,UIImagePickerControllerDelegate, UINaviga
     }
     
     @IBAction func cameraTapped(_ sender: UIBarButtonItem) {
+        if !UIImagePickerController.isSourceTypeAvailable(.camera){
+            
+            let alertController = UIAlertController.init(title: nil, message: "Device has no camera.", preferredStyle: .alert)
+            
+            let okAction = UIAlertAction.init(title: "Alright", style: .default, handler: {(alert: UIAlertAction!) in
+            })
+            
+            alertController.addAction(okAction)
+            self.present(alertController, animated: true, completion: nil)
+            
+        }
+        else{
+            imagePicker.sourceType = .camera
+            imagePicker.allowsEditing = false
+            present(imagePicker, animated: true, completion: nil)
+        }
+       
         
-        imagePicker.sourceType = .savedPhotosAlbum
+    }
+
+    @IBAction func libraryTapped(_ sender: UIBarButtonItem) {
+        imagePicker.sourceType = .photoLibrary
         imagePicker.allowsEditing = false
         present(imagePicker, animated: true, completion: nil)
         
     }
-
     @IBAction func shareTapped(_ sender: UIButton) {
         
         if SLComposeViewController.isAvailable(forServiceType: SLServiceTypeTwitter){
@@ -114,7 +131,7 @@ class ViewController: UIViewController,UIImagePickerControllerDelegate, UINaviga
             present(vc!, animated: true, completion: nil)
             
         }else{
-            self.navigationItem.title = "please log in to twitter"
+            self.navigationItem.title = "Please login to twitter"
         }
         
     }
